@@ -1,5 +1,6 @@
 /* Mastodon Bird UI by @rolle@mementomori.social
    1.5.7 */
+/* WIP edit for Glitch-Soc by Lastorder-DC */
 
 /* CSS variables */
 :root {
@@ -950,6 +951,14 @@ body.embed .status__content a,
   padding-bottom: calc(var(--gap-default) / 2);
 }
 
+.layout-single-column .status .status__info .status__info__account {
+  align-items: flex-start;
+}
+
+.layout-single-column .status .status__info .status__info__icons {
+  margin-left: auto;
+}
+
 /* Display name */
 .layout-single-column .status__info .status__display-name {
   align-items: flex-start;
@@ -1025,7 +1034,7 @@ body.embed .detailed-status,
 .layout-single-column .detailed-status,
 .layout-single-column .detailed-status__action-bar,
 .layout-single-column .column > .scrollable {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 /* Avatar */
@@ -1157,6 +1166,10 @@ body.embed .detailed-status,
   margin: 0;
 }
 
+.layout-single-column .status__content {
+  margin-top: auto;
+}
+
 /* Status update tinted to right */
 .layout-single-column .status__action-bar,
 .layout-single-column .attachment-list,
@@ -1164,7 +1177,7 @@ body.embed .detailed-status,
 .layout-single-column .status .status__content,
 .layout-single-column .notification.notification-admin-sign-up .display-name__account {
   font-size: var(--font-size);
-  padding-left: calc(var(--size-avatar) + var(--gap-default));
+  padding-left: 2px;
   padding-top: 0;
 }
 
@@ -1505,7 +1518,7 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
 }
 
 .layout-single-column .status__prepend {
-  padding-left: calc(var(--size-avatar) - 4px);
+  /* padding-left: calc(var(--size-avatar) - 4px); Change for Glitch: remove padding */
 }
 
 .layout-single-column .notification.notification-update .account__display-name,
@@ -1704,6 +1717,10 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   content: var(--icon-boost-status-prepend);
   position: relative;
   top: 1px;
+  // Change for Glitch: RT Icon not displayed
+  display: block;
+  width: 14px;
+  height: 14px;
 }
 
 .layout-single-column .notification .notification__message .fa {

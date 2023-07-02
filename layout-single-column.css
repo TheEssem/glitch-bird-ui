@@ -302,6 +302,11 @@ body.layout-single-column {
   color: var(--color-fg);
 }
 
+/* Post content fade */
+.layout-single-column .status.collapsed .status__content:after {
+  background: linear-gradient(rgba(40,44,55,0), var(--color-bg));
+}
+
 /* Logo */
 .layout-single-column .ui__header__logo,
 .layout-single-column .column-link.column-link--logo {
@@ -768,6 +773,7 @@ body.embed .status__content a,
 .layout-single-column .poll__link,
 .layout-single-column .muted .poll,
 .layout-single-column .status .status__relative-time,
+.layout-single-column .status .status__info,
 .layout-single-column .status .status__visibility-icon,
 .layout-single-column .block-modal__action-bar > div,
 .layout-single-column .boost-modal__action-bar > div,
@@ -972,21 +978,7 @@ body.embed .status__content a,
   gap: calc(var(--gap-default) / 2);
 }
 
-/* The separator dot */
-.layout-single-column .status__info::before {
-  color: var(--color-dim);
-  content: "·";
-  display: inline-block;
-  font-size: var(--font-size);
-  font-weight: 400;
-  height: 20px;
-  margin-left: -6px;
-  margin-right: -10px;
-  order: 2;
-  position: relative;
-}
-
-.layout-single-column .status__info .status__relative-time {
+.layout-single-column .status__info .status__info__icons {
   height: unset;
   order: 3;
 }
@@ -1059,9 +1051,11 @@ body.embed .detailed-status,
 
 /* Avatars */
 .layout-single-column .account-card__title__avatar .account__avatar,
-.layout-single-column .account-card__title__avatar img,
-.layout-single-column .account__avatar > img,
-.layout-single-column .column > .scrollable .status__avatar img {
+.layout-single-column .account-card__title__avatar,
+.layout-single-column .account__avatar,
+.layout-single-column .account__avatar-overlay > .account__avatar-overlay-base,
+.layout-single-column .account__avatar-overlay > .account__avatar-overlay-overlay,
+.layout-single-column .column > .scrollable .status__avatar {
   border: 0;
   border-radius: 50%;
   box-shadow: rgb(255 255 255 / 0.03) 0 0 2px inset;
@@ -1175,6 +1169,7 @@ body.embed .detailed-status,
 .layout-single-column .attachment-list,
 .layout-single-column .status__content__read-more-button,
 .layout-single-column .status .status__content,
+.layout-single-column .status .reactions-bar,
 .layout-single-column .notification.notification-admin-sign-up .display-name__account {
   font-size: var(--font-size);
   padding-left: calc(var(--size-avatar) + var(--gap-default));
@@ -1222,14 +1217,13 @@ body.embed .detailed-status,
 .layout-single-column .status .video-player,
 .layout-single-column .status .media-gallery {
   margin-left: auto;
-  /* Need to override inline styles */
-  /* stylelint-disable-next-line */
-  width: calc(100% - calc(var(--size-avatar) + var(--gap-default))) !important;
+  margin-right: auto;
+  gap: 0;
 }
 
-.layout-single-column .status .status-card {
+/*.layout-single-column .status .status-card {
   margin-left: calc(var(--size-avatar) + var(--gap-default));
-}
+}*/
 
 /* Detailed status update */
 .layout-single-column .detailed-status .status__content {
@@ -1722,7 +1716,7 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   content: var(--icon-boost-status-prepend);
   position: relative;
   top: 1px;
-  // Change for Glitch: RT Icon not displayed
+  /* Change for Glitch: RT Icon not displayed */
   display: block;
   width: 14px;
   height: 14px;
@@ -1892,15 +1886,36 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
 .layout-single-column .getting-started__trends h4,
 .layout-single-column .account__header__bar {
   border-color: var(--color-border);
+  background-color: transparent;
+}
+
+.layout-single-column .account__header__bio {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 0;
+}
+
+.layout-single-column .account__header__bio .account__header__content {
+  order: 1;
+  flex: 0 0 100%;
+  padding: 5px 10px;
 }
 
 .layout-single-column .account__header__bio .account__header__fields {
   background-color: transparent;
   color: var(--color-dim);
-  display: flex;
+  display: inline;
   flex-wrap: wrap;
   gap: var(--gap-default);
   padding: 0;
+  border: 0;
+  order: 3;
+}
+
+.layout-single-column .account__header__bio .account__header__fields .verified {
+  background: none;
+  border: none;
 }
 
 /* Hide label */
@@ -1909,11 +1924,13 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
 }
 
 /* Joined label */
-.layout-single-column .account__header__bio .account__header__fields dt:not([title]) {
+.layout-single-column .account__header__bio .account__header__joined {
   display: inline-flex;
   font-weight: 400;
   gap: calc(var(--gap-default) / 2);
   text-transform: unset;
+  order: 2;
+  padding: 5px 10px;
 }
 
 .layout-single-column h4,
@@ -1923,7 +1940,7 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   text-transform: unset;
 }
 
-.layout-single-column .account__header__bio .account__header__fields dt:not([title])::before {
+.layout-single-column .account__header__bio .account__header__joined::before {
   content: url('data:image/svg+xml, %3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="%23717c9b" class="r-115tad6 r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"%3E%3Cg%3E%3Cpath d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"%3E%3C/path%3E%3C/g%3E%3C/svg%3E');
   height: 18.5px;
   width: 18.5px;
@@ -1975,6 +1992,7 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
 .layout-single-column .account__header__bar .avatar .account__avatar {
   background-color: transparent;
   border: 0;
+  border-radius: 50%;
 
   /* It's inlined so we have to use !important */
   /* stylelint-disable-next-line */
@@ -1983,6 +2001,10 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   /* It's inlined so we have to use !important */
   /* stylelint-disable-next-line */
   width: 133.5px !important;
+
+  /* It's inlined so we have to use !important */
+  /* stylelint-disable-next-line */
+  background-size: 133.5px 133.5px !important;
 }
 
 .layout-single-column .account__header__tabs {
@@ -2409,12 +2431,16 @@ body.embed .button.logo-button:hover,
   }
 
   .layout-single-column .column-link[href="/lists"] {
+    order: 13;
+  }
+
+  .layout-single-column .column-link[href="#"] {
     order: 12;
   }
 
   /* stylelint-disable-next-line no-duplicate-selectors */
   .layout-single-column .list-panel {
-    order: 13;
+    order: 14;
   }
 
   .layout-single-column .column-link[href="/settings/preferences"] {
@@ -2423,15 +2449,15 @@ body.embed .button.logo-button:hover,
 
   .layout-single-column .navigation-panel__sign-in-banner,
   .layout-single-column .navigation-panel__legal {
-    order: 14;
-  }
-
-  .layout-single-column .flex-spacer {
     order: 15;
   }
 
-  .layout-single-column .getting-started__trends {
+  .layout-single-column .flex-spacer {
     order: 16;
+  }
+
+  .layout-single-column .getting-started__trends {
+    order: 17;
   }
 
   .layout-single-column .status__action-bar .icon-button {
@@ -3071,6 +3097,11 @@ body.embed .button.logo-button:hover,
 .layout-single-column .media-gallery__gifv video,
 .layout-single-column .media-gallery__preview {
   backface-visibility: hidden;
+  border-radius: 10px;
+}
+
+.layout-single-column .media-gallery__item.letterbox,
+.layout-single-column .video-player.letterbox {
   border-radius: 10px;
 }
 
